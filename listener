@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+import json
+import argparse
+import importlib
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--model', '--m', '-m', required=True)
+parser.add_argument('--data', '--d', '-d', required=True)
+
+args = parser.parse_args()
+
+def resolve(data):
+    # prepare data for standard output
+    sys.stdout.write(json.dumps(data) + "\n")
+
+if len(sys.argv) == 1:
+    resolve([])
+
+if args.model:
+    # normalize folder name if it contains '-' character
+    model_name = args.model.replace('-', '_')
+
+    if args.data:
+        # parse data paramter
+        target_data = json.loads(args.data)
+
+        try:
+            APP_ENV = os.environ.get('APP_ENV')
+
+            if APP_ENV == None:
+                APP_ENV = 'atred'
+
+            # import target model based on predefined parameters (model name)
+            target_model = importlib.import_module(f'{APP_ENV}.{model_name}.__main__')
+
+            # run 'launch' function of target model with data paramter
+            result = target_model.launch(target_data)
+            resolve(result)
+        except:
+            resolve([])
+    else:
+        resolve([])
