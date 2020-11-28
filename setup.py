@@ -8,4 +8,11 @@ setup(name='atred',
       author_email='haqaliz@aol.com',
       license='MIT',
       packages=['atred'],
+      install_requires=[
+            'spacy',
+            'gensim',
+            'grpcio',
+            'python-dotenv',
+            'en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.3.1/en_core_web_sm-2.3.1.tar.gz'
+      ],
       zip_safe=False)

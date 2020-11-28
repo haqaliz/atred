@@ -5,6 +5,8 @@ import os
 import json
 import argparse
 import importlib
+from dotenv import load_dotenv
+from atred.proto.client import emit
 
 parser = argparse.ArgumentParser()
 
@@ -12,6 +14,9 @@ parser.add_argument('--model', '--m', '-m', required=True)
 parser.add_argument('--data', '--d', '-d', required=True)
 
 args = parser.parse_args()
+
+# load environments
+load_dotenv()
 
 def resolve(data):
     # prepare data for standard output
@@ -35,11 +40,15 @@ if args.model:
                 APP_ENV = 'atred'
 
             # import target model based on predefined parameters (model name)
-            target_model = importlib.import_module(f'{APP_ENV}.{model_name}.__main__')
+            # target_model = importlib.import_module(f'{APP_ENV}.{model_name}.__main__')
 
             # run 'launch' function of target model with data paramter
-            result = target_model.launch(target_data)
-            resolve(result)
+            # result = target_model.launch(target_data)
+            # resolve(result)
+            
+            response = emit(target_data)
+
+            resolve(response)
         except:
             resolve([])
     else:

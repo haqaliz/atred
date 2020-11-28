@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package transmitter;
+
+// A simple key-value storage service
+service Transmitter {
+  // Provides a value for each key request
+  rpc Transmit (Request) returns (Response) {}
+}
+
+// The request message containing the key
+message Request {
+  string content = 1;
+}
+
+// The response message containing the value associated with the key
+message Response {
+  string content = 1;
+}
