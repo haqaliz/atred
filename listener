@@ -10,7 +10,6 @@ from atred.proto.client import emit
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--model', '--m', '-m', required=True)
 parser.add_argument('--data', '--d', '-d', required=True)
 
 args = parser.parse_args()
