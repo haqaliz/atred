@@ -5,6 +5,8 @@ import grpc
 
 try:
     from atred.proto import transmitter_pb2, transmitter_pb2_grpc
+    from atred.lib.general import prepare_message, check_keys_existence, first_available_key
+    from atred.lib.routes import prepare_route
 except:
     pass
 
@@ -17,28 +19,19 @@ except:
 class Transmitter(transmitter_pb2_grpc.TransmitterServicer):
 
     def Transmit(self, request, context):
-        response_content = {
-            "meta": {
-                "code": 200
-            }
-        }
+        response_content = {}
         
         if request.content:
             request_content = json.loads(request.content)
-            if "username" in request_content and \
-               "password" in request_content:
-                username = request_content["username"]
-                password = request_content["password"]
-                if username == "haqaliz" and password == "king_1374":
-                    response_content["meta"]["message"] = "logged in successfully"
-                else:
-                    response_content["meta"]["code"] = 404
-                    response_content["meta"]["message"] = "username or password is wrong"
-            else:
-                response_content["meta"]["code"] = 400
-                response_content["meta"]["message"] = "you must define username and password"
-        return transmitter_pb2.Response(content=json.dumps(response_content))
+            route = first_available_key([ "path", "endpoint", "route" ], request_content)
+            content = first_available_key([ "content", "context", "data" ], request_content)
 
+            if route != None and content != None:
+                response_content = prepare_route(route, content)
+            else:
+                response_content = prepare_message(code=500, message="Declare a parameter for your target path.")
+
+        return transmitter_pb2.Response(content=json.dumps(response_content))
 
 def serve():
     RPC_PORT = os.environ.get('RPC_PORT')
