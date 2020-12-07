@@ -24,31 +24,25 @@ def resolve(data):
 if len(sys.argv) == 1:
     resolve([])
 
-if args.model:
-    # normalize folder name if it contains '-' character
-    model_name = args.model.replace('-', '_')
+if args.data:
+    # parse data paramter
+    target_data = json.loads(args.data)
 
-    if args.data:
-        # parse data paramter
-        target_data = json.loads(args.data)
+    try:
+        APP_ENV = os.environ.get('APP_ENV')
 
-        try:
-            APP_ENV = os.environ.get('APP_ENV')
+        if APP_ENV == None:
+            APP_ENV = 'atred'
 
-            if APP_ENV == None:
-                APP_ENV = 'atred'
+        # import target model based on predefined parameters (model name)
+        # target_model = importlib.import_module(f'{APP_ENV}.{model_name}.__main__')
 
-            # import target model based on predefined parameters (model name)
-            # target_model = importlib.import_module(f'{APP_ENV}.{model_name}.__main__')
+        # run 'launch' function of target model with data paramter
+        # result = target_model.launch(target_data)
+        # resolve(result)
 
-            # run 'launch' function of target model with data paramter
-            # result = target_model.launch(target_data)
-            # resolve(result)
-            
-            response = emit(target_data)
+        response = emit(target_data)
 
-            resolve(response)
-        except:
-            resolve([])
-    else:
+        resolve(response)
+    except:
         resolve([])

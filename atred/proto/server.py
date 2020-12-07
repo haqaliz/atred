@@ -5,8 +5,8 @@ import grpc
 
 try:
     from atred.proto import transmitter_pb2, transmitter_pb2_grpc
-    from atred.lib.general import prepare_message, check_keys_existence, first_available_key
-    from atred.lib.routes import prepare_route
+    from atred.modules.general import prepare_message, check_keys_existence, first_available_key
+    from atred.modules.routes import prepare_route
 except:
     pass
 

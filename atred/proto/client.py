@@ -21,4 +21,5 @@ def emit(data):
         stub = transmitter_pb2_grpc.TransmitterStub(channel)
         data_content = json.dumps(data)
         response = stub.Transmit(transmitter_pb2.Request(content=data_content))
+
     return json.loads(response.content)
