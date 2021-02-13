@@ -18,19 +18,17 @@ def prepare_route(route, data = [], model=''):
     if model == None:
         model = ''
 
-    if check_route("^\/?summarize$", route):
-        try:
+    try:
+        if check_route("^\/?summarize$", route):
             response = models["nlp"]["summarization"](model=model, content=data)
-            
-            return prepare_message(content=response)
-        except:
-            return prepare_message(code=500, message=f"Input must have more than one sentence")
-    elif check_route("^\/?sentiment$", route):
-        try:
+        elif check_route("^\/?entity$", route):
+            response = models["nlp"]["entity"](model=model, content=data)
+        elif check_route("^\/?sentiment$", route):
             response = models["nlp"]["sentiment"](model=model, content=data)
+        else:
+            return prepare_message(code=404, message=f"The '{route}' path doesn't exist.")
 
+        if response != '':
             return prepare_message(content=response)
-        except:
-            return prepare_message(code=500, message=f"Input must have more than one sentence")
-    else:
-        return prepare_message(code=404, message=f"The '{route}' path doesn't exist.")
+    except:
+        return prepare_message(code=500, message=f"Input must have more than one sentence")
