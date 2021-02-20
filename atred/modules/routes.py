@@ -25,6 +25,8 @@ def prepare_route(route, data = [], model=''):
             response = models["nlp"]["entity"](model=model, content=data)
         elif check_route("^\/?sentiment$", route):
             response = models["nlp"]["sentiment"](model=model, content=data)
+        elif check_route("^\/?classify$", route):
+            response = models["nlp"]["classify"](model=model, content=data)
         else:
             return prepare_message(code=404, message=f"The '{route}' path doesn't exist.")
 
