@@ -26,9 +26,10 @@ class Transmitter(transmitter_pb2_grpc.TransmitterServicer):
             route = first_available_key([ "path", "endpoint", "route" ], request_content)
             content = first_available_key([ "content", "context", "data" ], request_content)
             model = first_available_key([ "model", "model_name", None], request_content)
+            options = first_available_key([ "options", None], request_content)
 
             if route != None and content != None:
-                response_content = prepare_route(route, data=content, model=model)
+                response_content = prepare_route(route, data=content, model=model, options=options)
             else:
                 response_content = prepare_message(code=500, message="Declare a parameter for your target path.")
 
