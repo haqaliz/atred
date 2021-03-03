@@ -9,7 +9,7 @@ from heapq import nlargest
 en_core_web_sm_nlp = spacy.load('en_core_web_sm')
 gensim_summarization = gensim.summarization
 
-def summarize(model="spacy/en_core_web_sm_summarize", content=""):
+def summarize(model="spacy/en_core_web_sm", content=""):
     normalized_content = content
 
     if isinstance(content, list) == True:
@@ -18,11 +18,11 @@ def summarize(model="spacy/en_core_web_sm_summarize", content=""):
     validated_model_name = model.lower()
 
     if model.lower() == "":
-        validated_model_name = "spacy/en_core_web_sm_summarize"
+        validated_model_name = "spacy/en_core_web_sm"
 
     summary = ""
 
-    if validated_model_name == "spacy/en_core_web_sm_summarize":
+    if validated_model_name == "spacy/en_core_web_sm":
         raw_text = normalized_content
         docx = en_core_web_sm_nlp(raw_text)
         stopwords = list(STOP_WORDS)
