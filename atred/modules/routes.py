@@ -22,6 +22,13 @@ def prepare_route(route, data = [], model='', options=None):
     if options == None:
         options = {}
 
+    limit = first_available_key([ "count", "limit" ], options)
+    whole_content = first_available_key([ "whole_content", "whole", "total_content", "total" ], options)
+    if limit == None:
+        limit = 0
+    if whole_content == None:
+        whole_content = False
+
     try:
         if check_route("^\/?summarize$", route):
             response = models["nlp"]["summarization"](model=model, content=data)
@@ -29,12 +36,11 @@ def prepare_route(route, data = [], model='', options=None):
             response = models["nlp"]["entity"](model=model, content=data)
         elif check_route("^\/?sentiment$", route):
             response = models["nlp"]["sentiment"](model=model, content=data)
+        elif check_route("^\/?aspect[_\-\. ]+sentiment$", route):
+            response = models["nlp"]["aspect_sentiment"](model=model, content=data, count=limit, whole=whole_content)
         elif check_route("^\/?classify$", route):
             response = models["nlp"]["classify"](model=model, content=data)
         elif check_route("^\/?vocabulary$", route):
-            limit = first_available_key([ "count", "limit" ], options)
-            if limit == None:
-                limit = 0
             response = models["nlp"]["vocabulary"](model=model, content=data, count=limit)
         else:
             return prepare_message(code=404, message=f"The '{route}' path doesn't exist.")

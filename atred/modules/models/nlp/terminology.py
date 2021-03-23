@@ -10,12 +10,12 @@ import spacy
 ## LOAD MODELS
 nltk.download('stopwords')
 all_nltk_stopwords = stopwords.words('english')
-all_nltk_stopwords.extend([ '.', ',', ':', ';', '"', '\'', '`', '’', '“', '”', '’', 'a', 's', 've', 'the' ])
+all_nltk_stopwords.extend([ '.', ',', ':', ';', '"', '\'', '`', '’', '“', '”', '’', 'a', 's', 've', 'the', '-' ])
 sp = spacy.load('en_core_web_sm')
 all_stopwords = sp.Defaults.stop_words
-all_stopwords.update([ '.', ',', ':', ';', '"', '\'', '`', '’', '“', '”', '’', 'a', 's', 've', 'the' ])
+all_stopwords.update([ '.', ',', ':', ';', '"', '\'', '`', '’', '“', '”', '’', 'a', 's', 've', 'the', '-' ])
 
-def vocabulary(model="nltk/en", content="", count=0):
+def vocabulary(model="nltk-en", content="", count=0):
     normalized_content = content
 
     if isinstance(content, list) == True:
@@ -24,11 +24,11 @@ def vocabulary(model="nltk/en", content="", count=0):
     validated_model_name = model.lower()
 
     if model.lower() == "":
-        validated_model_name = "nltk/en"
+        validated_model_name = "nltk-en"
 
     words = []
 
-    if validated_model_name == "nltk/en":
+    if validated_model_name == "nltk-en":
         text_tokens = word_tokenize(normalized_content)
         words = [word for word in text_tokens if not word.lower() in all_nltk_stopwords]
     elif validated_model_name == "gensim":
