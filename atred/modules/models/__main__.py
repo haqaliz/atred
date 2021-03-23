@@ -1,7 +1,7 @@
-# LOAD MODULES
+# # LOAD MODULES
 from atred.modules.models.nlp.summarization import summarize
 from atred.modules.models.nlp.entity import find_entities
-from atred.modules.models.nlp.sentiment import predict_sentiment
+from atred.modules.models.nlp.sentiment import predict_sentiment, predict_terminologies_sentiment
 from atred.modules.models.nlp.classifier.news import classify
 from atred.modules.models.nlp.terminology import vocabulary
 
@@ -13,5 +13,6 @@ def load_models():
             "sentiment": predict_sentiment,
             "classify": classify,
             "vocabulary": vocabulary,
+            "aspect_sentiment": predict_terminologies_sentiment,
         }
     }
