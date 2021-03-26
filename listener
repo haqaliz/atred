@@ -34,13 +34,6 @@ if args.data:
         if APP_ENV == None:
             APP_ENV = 'atred'
 
-        # import target model based on predefined parameters (model name)
-        # target_model = importlib.import_module(f'{APP_ENV}.{model_name}.__main__')
-
-        # run 'launch' function of target model with data paramter
-        # result = target_model.launch(target_data)
-        # resolve(result)
-
         response = emit(target_data)
 
         resolve(response)
